@@ -18,6 +18,8 @@ public class HotelResponse {
     private Long id;
     private String username;
     private UserResponse user;
+
+
     private AddressResponse address;
     private int price;
     private Date createdAt;

@@ -7,6 +7,8 @@ import java.util.Date;
 @Getter
 public class BookHotelRequest {
     private Long idHotel;
+
+
     private Long idUser;
     private int totalPrice;
     private int countRoom;

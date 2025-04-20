@@ -22,4 +22,5 @@ public class AddressHotel extends AbstractEntity<Long> {
 
     @OneToOne(mappedBy = "addressHotel")
     private Hotel hotel;
+
 }

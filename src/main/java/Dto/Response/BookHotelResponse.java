@@ -17,6 +17,7 @@ import java.util.Date;
 public class BookHotelResponse {
     private Long id;
     private Date bookStart;
+
     private Date bookEnd;
     private String statusBook;
     private int totalPrice;

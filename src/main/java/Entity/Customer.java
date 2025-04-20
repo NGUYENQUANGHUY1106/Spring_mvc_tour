@@ -26,6 +26,7 @@ public class Customer extends AbstractEntity<Long> {
     @OneToOne
     private UserEntity user;
 
+
     @OneToMany(mappedBy = "customer")
     private List<BookHotel> bookHotels;
 

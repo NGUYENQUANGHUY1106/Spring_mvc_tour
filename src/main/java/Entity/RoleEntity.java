@@ -23,6 +23,7 @@ public class RoleEntity  extends  AbstractEntity<Integer>   {
     private String description;
 
     @OneToMany(mappedBy = "role")
+
     private Set<UserHasRole> hasRoleSet;
 
 

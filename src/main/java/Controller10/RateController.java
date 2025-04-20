@@ -11,6 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/rate")
 public class RateController {
+
+
     @Autowired
     private RateService rateService;
 

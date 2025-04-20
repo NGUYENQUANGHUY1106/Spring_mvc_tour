@@ -21,6 +21,7 @@ public class Rate extends AbstractEntity<Long> {
     @ManyToOne
     private Customer customer;
 
+
     @ManyToOne
     private Hotel hotel;
 }

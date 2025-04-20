@@ -25,6 +25,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 public class PreFilter  extends OncePerRequestFilter {
     @Autowired
+
+
     private JwtUtil jwtUtil;
 
     @Autowired

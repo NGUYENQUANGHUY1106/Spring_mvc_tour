@@ -31,6 +31,8 @@ import java.util.Map;
 @RequestMapping("/hotel")
 public class HotelController {
 
+
+
     @Autowired
     private HotelService hotelService;
 

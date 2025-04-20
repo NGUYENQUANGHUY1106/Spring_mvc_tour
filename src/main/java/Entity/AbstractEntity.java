@@ -30,6 +30,7 @@ public class AbstractEntity<T> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+
     @javax.persistence.Column(name = "updated_at")
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)

@@ -20,6 +20,7 @@ public class Hotel extends AbstractEntity<Long> {
     private AddressHotel addressHotel;
     @OneToOne
     private UserEntity user;
+
     private String img;
     private int price;
 

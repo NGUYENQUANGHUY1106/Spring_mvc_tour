@@ -5,6 +5,8 @@ import lombok.Getter;
 
 @Getter
 public class AddressRequest {
+
+
     private String province;
     private String district;
     private String town;

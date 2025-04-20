@@ -29,6 +29,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity(prePostEnabled = true,jsr250Enabled = true,securedEnabled = true,proxyTargetClass = true)
 public class SecurityConfig  {
 
+
+
     private String[] WHITE_LIST = {"/login", "/register", "/", "/login1"};
 
     @Autowired

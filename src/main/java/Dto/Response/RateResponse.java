@@ -12,5 +12,6 @@ public class RateResponse {
     private CustomerResponse customer;
     private String comment;
     private float rateStar;
+
     private Date createdAt;
 }

@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class AddressResponse {
     private Long id;
+
     private String province;
     private String district;
     private String town;
