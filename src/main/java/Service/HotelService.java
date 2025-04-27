@@ -12,6 +12,7 @@ import MapperData.HotelMapper;
 import Repository.BookHotelRepository;
 import Repository.HotelRepository;
 import Repository.Specification.HotelSpecification;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,12 @@ public class HotelService {
 
     @Autowired
     private BookHotelRepository bookHotelRepository;
+
+    @Transactional
+    public Hotel updateHotel(Hotel hotel) {
+        return hotelRepository.save(hotel);
+    }
+
 
     public HotelResponse add(HotelRequest hotelRequest) {
         Hotel hotel = hotelMapper.toHotel(hotelRequest);

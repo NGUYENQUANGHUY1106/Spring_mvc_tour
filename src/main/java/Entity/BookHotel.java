@@ -30,4 +30,15 @@ public class BookHotel extends AbstractEntity<Long>{
     @ManyToOne
     private Hotel hotel;
 
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    public void setStatusBook(String statusBook) {
+        this.statusBook = statusBook;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
 }

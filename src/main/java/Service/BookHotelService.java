@@ -36,11 +36,24 @@ public class BookHotelService {
         BookHotel bookHotel = bookHotelMapper.toBookHotel(bookHotelRequest);
         Hotel hotel = hotelService.getHotelEntityById(bookHotelRequest.getIdHotel());
         Customer customer = customerService.getCustomerByIdUser(bookHotelRequest.getIdUser());
+
+        // 🛠 Bước kiểm tra và trừ số phòng
+        int currentRoom = hotel.getRoom();
+        if (currentRoom < bookHotelRequest.getCountRoom()) {
+            throw new IllegalArgumentException("Không đủ phòng trống để đặt!");
+        }
+        hotel.setRoom(currentRoom - bookHotelRequest.getCountRoom());
+        hotelService.updateHotel(hotel);
+
+        // Set các thông tin booking
         bookHotel.setCustomer(customer);
         bookHotel.setHotel(hotel);
         bookHotel.setStatusBook(EnumStatusBook.WAIT.name());
+
         return bookHotelMapper.toBookHotelResponse(bookHotelRepository.save(bookHotel));
     }
+
+
 
     public List<BookHotelResponse> getBookHotelByIdUser(Long idUser) {
         String role = getCurrentUserRole();

@@ -14,4 +14,16 @@ public class BookHotelRequest {
     private int countRoom;
     private Date bookStart;
     private Date bookEnd;
+
+    public Long getIdHotel() {
+        return idHotel;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public int getCountRoom() {
+        return countRoom;
+    }
 }
