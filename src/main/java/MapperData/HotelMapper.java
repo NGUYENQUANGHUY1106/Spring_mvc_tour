@@ -15,12 +15,15 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface HotelMapper {
     @Mapping(source = "address", target = "addressHotel")
     @Mapping(source = "username", target = "name")
+    @Mapping(source = "room", target = "room")
     Hotel toHotel(HotelRequest hotelRequest);
     @Mapping(source = "name", target = "username")
     @Mapping(source = "addressHotel", target = "address")
+    @Mapping(source = "room", target = "room")
     HotelResponse toHotelResponse(Hotel hotel);
 
     @Mapping(source = "addressHotel", target = "address")
     @Mapping(source = "name", target = "username")
+    @Mapping(source = "room", target = "room")
     HotelCustomerGetResponse toHotelCustomerGetResponse(Hotel hotel);
 }

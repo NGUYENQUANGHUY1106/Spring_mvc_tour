@@ -24,6 +24,16 @@ public class Hotel extends AbstractEntity<Long> {
     private String img;
     private int price;
 
+    private int room;
+
+    public int getRoom() {
+        return room;
+    }
+
+    public void setRoom(int room) {
+        this.room = room;
+    }
+
     @OneToMany(mappedBy = "hotel")
     private List<BookHotel> bookHotels;
 

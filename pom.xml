@@ -1,6 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.example</groupId>
   <artifactId>mvc_10</artifactId>
   <packaging>war</packaging>
@@ -17,19 +21,26 @@
     <mapstruct.version>1.5.5.Final</mapstruct.version>
     <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     <projectlombok-lombok.version>1.18.30</projectlombok-lombok.version>
-<!--    <jakarta.persistence.version>3.2.0</jakarta.persistence.version>-->
   </properties>
 
   <dependencies>
 
+    <!-- Spring MVC -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
       <version>${spring.version}</version>
     </dependency>
 
+    <!-- Jakarta Servlet API -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
 
-    <!-- Spring ORM (tích hợp Hibernate với Spring) -->
+    <!-- Spring ORM -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
@@ -43,15 +54,13 @@
       <version>${hibernate.version}</version>
     </dependency>
 
-    <!-- Hibernate EntityManager -->
+    <!-- Hibernate Entity Manager -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
       <version>6.0.0.Alpha6</version>
       <type>pom</type>
     </dependency>
-
-
 
     <!-- MySQL Connector -->
     <dependency>
@@ -60,31 +69,31 @@
       <version>9.2.0</version>
     </dependency>
 
-    <!-- Jackson Dependencies -->
+    <!-- Jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
       <version>${jackson.version}</version>
     </dependency>
 
+    <!-- Spring Data JPA -->
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
       <version>3.4.4</version>
     </dependency>
 
+    <!-- Lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -105,16 +114,6 @@
       <artifactId>mapstruct</artifactId>
       <version>${mapstruct.version}</version>
     </dependency>
-
-    <!-- jakarta.servlet -->
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.1.0</version>
-      <scope>provided</scope>
-    </dependency>
-
-
 
     <!-- Spring Security -->
     <dependency>
@@ -141,52 +140,52 @@
       <artifactId>jjwt-api</artifactId>
       <version>${jwt.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-impl</artifactId>
       <version>${jwt.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-jackson</artifactId>
       <version>${jwt.version}</version>
     </dependency>
 
+    <!-- Logback -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.4.11</version>
     </dependency>
 
+    <!-- Spring Aspects -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aspects</artifactId>
       <version>${spring.version}</version>
     </dependency>
 
-
+    <!-- File Upload -->
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>1.4</version>
     </dependency>
 
+    <!-- JSON Library -->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20230227</version>
     </dependency>
 
-
-
-
   </dependencies>
 
   <build>
     <finalName>mvc_10</finalName>
     <plugins>
+
+      <!-- Maven Compiler Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -215,8 +214,15 @@
           </annotationProcessorPaths>
         </configuration>
       </plugin>
+
+      <!-- Maven WAR Plugin (BẮT BUỘC để build file .war) -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.2</version>
+      </plugin>
+
     </plugins>
   </build>
-
 
 </project>

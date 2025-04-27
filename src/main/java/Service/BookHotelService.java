@@ -34,7 +34,7 @@ public class BookHotelService {
 
     public BookHotelResponse bookHotel(BookHotelRequest bookHotelRequest) {
         BookHotel bookHotel = bookHotelMapper.toBookHotel(bookHotelRequest);
-        Hotel hotel = hotelService.getHotelById(bookHotelRequest.getIdHotel());
+        Hotel hotel = hotelService.getHotelEntityById(bookHotelRequest.getIdHotel());
         Customer customer = customerService.getCustomerByIdUser(bookHotelRequest.getIdUser());
         bookHotel.setCustomer(customer);
         bookHotel.setHotel(hotel);

@@ -16,6 +16,8 @@ public class HotelCustomerGetResponse {
     private AddressResponse address;
     private String username;
 
+    private Integer room;
+
     private int price;
     private String img;
     private double avgRate;

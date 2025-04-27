@@ -19,9 +19,20 @@ public class HotelResponse {
     private String username;
     private UserResponse user;
 
+    private Integer room;
+
+    public int getRoom() {
+        return room;
+    }
+
+    public void setRoom(int room) {
+        this.room = room;
+    }
 
     private AddressResponse address;
     private int price;
     private Date createdAt;
     private String img;
+
+
 }

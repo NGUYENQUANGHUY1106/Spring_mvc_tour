@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,29 +30,44 @@ public class HotelService {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private AddressHotelService addressHotelService;
+
     @Autowired
     private BookHotelRepository bookHotelRepository;
 
     public HotelResponse add(HotelRequest hotelRequest) {
         Hotel hotel = hotelMapper.toHotel(hotelRequest);
-
+        hotel.setRoom(hotelRequest.getRoom());
         UserEntity userCreated = userService.addUserHotel(hotel.getUser());
         AddressHotel addressHotelCreated = addressHotelService.add(hotel.getAddressHotel());
         hotel.setAddressHotel(addressHotelCreated);
-
         hotel.setUser(userCreated);
         return hotelMapper.toHotelResponse(hotelRepository.save(hotel));
     }
 
-    public List<HotelCustomerGetResponse> getAll(){
+    public List<HotelCustomerGetResponse> getAll() {
         List<Hotel> hotels = hotelRepository.findAll();
-        return hotels.stream().map(hotelMapper::toHotelCustomerGetResponse).collect(Collectors.toList());
+        return hotels.stream()
+                .map(hotelMapper::toHotelCustomerGetResponse)
+                .collect(Collectors.toList());
     }
 
-    public Hotel getHotelById(Long idHotel) {
-        return hotelRepository.findById(idHotel).get();
+    public HotelResponse getHotelResponseById(Long idHotel) {
+        Hotel hotel = hotelRepository.findById(idHotel)
+                .orElseThrow(() -> {
+                    System.out.println("Không tìm thấy khách sạn với id = " + idHotel);
+                    return new ResourceNotFoundException("Không tìm thấy khách sạn với id = " + idHotel);
+                });
+        System.out.println("Tìm thấy khách sạn: "  + ", room = " + hotel.getRoom());
+        return hotelMapper.toHotelResponse(hotel);
+    }
+
+    // Nội bộ service
+    public Hotel getHotelEntityById(Long idHotel) {
+        return hotelRepository.findById(idHotel)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khách sạn với id = " + idHotel));
     }
 
     public Hotel getHotelByUserId(Long idUser) {
@@ -62,7 +75,7 @@ public class HotelService {
     }
 
     public List<HotelResponse> search(SearchRequest searchRequest) {
-        Specification<Hotel> spec = Specification.where(null); // bắt đầu với điều kiện rỗng
+        Specification<Hotel> spec = Specification.where(null);
 
         if (searchRequest.getNameHotel() != null && !searchRequest.getNameHotel().isEmpty()) {
             spec = spec.and(HotelSpecification.hasHotelName(searchRequest.getNameHotel()));
@@ -75,17 +88,17 @@ public class HotelService {
         List<Hotel> hotels = hotelRepository.findAll(spec);
 
         return hotels.stream()
-                .map(hotel -> hotelMapper.toHotelResponse(hotel))
+                .map(hotelMapper::toHotelResponse)
                 .collect(Collectors.toList());
     }
 
     public double getDoanhThu(Long idUser) {
-       try {
-           Hotel hotel = hotelRepository.findByUser_Id(idUser);
-           return bookHotelRepository.getTotalRevenueByHotelId(hotel.getId());
-       }catch (Exception e){
-           return 0.0;
-       }
+        try {
+            Hotel hotel = hotelRepository.findByUser_Id(idUser);
+            return bookHotelRepository.getTotalRevenueByHotelId(hotel.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0;
+        }
     }
-
 }
