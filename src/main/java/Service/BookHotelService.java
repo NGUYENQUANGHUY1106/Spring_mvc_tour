@@ -8,10 +8,12 @@ import Entity.Customer;
 import Entity.Hotel;
 import Enum1.EnumRole;
 import Enum1.EnumStatusBook;
+import Exception1.ResourceNotFoundException;
 import MapperData.BookHotelMapper;
 import MapperData.HotelMapper;
 import Repository.BookHotelRepository;
 import Repository.HotelRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +33,8 @@ public class BookHotelService {
     private HotelService hotelService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private HotelRepository hotelRepository;
 
     public BookHotelResponse bookHotel(BookHotelRequest bookHotelRequest) {
         BookHotel bookHotel = bookHotelMapper.toBookHotel(bookHotelRequest);
@@ -53,6 +57,26 @@ public class BookHotelService {
         return bookHotelMapper.toBookHotelResponse(bookHotelRepository.save(bookHotel));
     }
 
+    @Transactional
+    public BookHotelResponse checkoutBookHotel(Long idBookHotel) {
+        BookHotel bookHotel = bookHotelRepository.findById(idBookHotel)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy booking với id = " + idBookHotel));
+
+        if (!EnumStatusBook.CONFIRMED.name().equals(bookHotel.getStatusBook())) {
+            throw new IllegalStateException("Chỉ có thể trả phòng khi đã xác nhận đặt phòng!");
+        }
+
+        // 1. Đổi trạng thái booking thành CHECKOUT
+        bookHotel.setStatusBook(EnumStatusBook.CHECKOUT.name());
+        bookHotelRepository.save(bookHotel);
+
+        // 2. Cộng lại số phòng cho khách sạn
+        Hotel hotel = bookHotel.getHotel();
+        hotel.setRoom(hotel.getRoom() + bookHotel.getCountRoom());
+        hotelRepository.save(hotel);
+
+        return bookHotelMapper.toBookHotelResponse(bookHotel);
+    }
 
 
     public List<BookHotelResponse> getBookHotelByIdUser(Long idUser) {

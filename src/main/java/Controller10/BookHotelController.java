@@ -39,5 +39,9 @@ public class BookHotelController {
     public BookHotelResponse updateBooked( @RequestBody BookedHotelUpdateRequest bookedHotelUpdateRequest) {
         return bookHotelService.updateBooked(bookedHotelUpdateRequest);
     }
+    @PutMapping("/checkout/{idBookHotel}")
+    public BookHotelResponse checkout(@PathVariable Long idBookHotel) {
+        return bookHotelService.checkoutBookHotel(idBookHotel);
+    }
 
 }

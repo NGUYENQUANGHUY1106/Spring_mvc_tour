@@ -33,6 +33,10 @@ public class BookHotel extends AbstractEntity<Long>{
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+    public String getStatusBook() {
+        return statusBook;
+    }
+
     public void setStatusBook(String statusBook) {
         this.statusBook = statusBook;
     }
@@ -40,5 +44,8 @@ public class BookHotel extends AbstractEntity<Long>{
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
     }
-
+    public Hotel getHotel() { return hotel; }
+    public int getCountRoom() {
+        return countRoom;
+    }
 }

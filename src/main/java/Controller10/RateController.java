@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rate")
-public class git giutRateController {
+public class  RateController {
 
 
     @Autowired
