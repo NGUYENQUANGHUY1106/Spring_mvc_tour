@@ -95,11 +95,19 @@ public class BookHotelService {
 
 
 
-    public BookHotelResponse updateStatusBooked(Long idBooked,String status) {
+    public BookHotelResponse updateStatusBooked(Long idBooked, String status) {
         BookHotel bookHotel = bookHotelRepository.findById(idBooked).get();
         bookHotel.setStatusBook(status);
+
+        if (EnumStatusBook.CHECKOUT.name().equals(status)) {
+            Hotel hotel = bookHotel.getHotel();
+            hotel.setRoom(hotel.getRoom() + bookHotel.getCountRoom());
+            hotelRepository.save(hotel);
+        }
+
         return bookHotelMapper.toBookHotelResponse(bookHotelRepository.save(bookHotel));
     }
+
 
     public BookHotelResponse updateBooked(BookedHotelUpdateRequest bookedHotelUpdateRequest) {
         BookHotel bookHotel = bookHotelRepository.findById(bookedHotelUpdateRequest.getId()).get();
