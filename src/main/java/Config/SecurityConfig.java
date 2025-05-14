@@ -53,7 +53,9 @@ public class SecurityConfig  {
                                         new MvcRequestMatcher(introspector, "/customer/**"),
                                         new MvcRequestMatcher(introspector, "/auth/login"),
                                         new MvcRequestMatcher(introspector, "/hotel/**"),
-                                        new MvcRequestMatcher(introspector, "/book_hotel/**")
+                                        new MvcRequestMatcher(introspector, "/book_hotel/**"),
+                                        new MvcRequestMatcher(introspector, "/api/favorite/**")
+
                                 )
                                 .permitAll()
                                 .requestMatchers(new MvcRequestMatcher(introspector, "/users")).hasAuthority("FULL_ACCESS")

@@ -23,4 +23,8 @@ public class AddressHotel extends AbstractEntity<Long> {
     @OneToOne(mappedBy = "addressHotel")
     private Hotel hotel;
 
+    // ✅ Hàm mới để lấy địa chỉ dạng chuỗi đầy đủ
+    public String getAddress() {
+        return String.format("%s, %s, %s, %s", detail, town, district, province);
+    }
 }
