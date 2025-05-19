@@ -1,6 +1,7 @@
 package Controller10;
 
 import Entity.FavoriteHotel;
+import Repository.FavoriteHotelRepository;
 import Service.FavoriteHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ public class FavoriteHotelController {
 
     @Autowired
     private FavoriteHotelService service;
+    @Autowired
+    private FavoriteHotelRepository favoriteHotelRepository ;
 
     @PostMapping("/toggle/{userId}/{hotelId}")
     public ResponseEntity<?> toggleFavorite(@PathVariable Long userId, @PathVariable Long hotelId) {
@@ -29,5 +32,15 @@ public class FavoriteHotelController {
     public ResponseEntity<List<FavoriteHotel>> getFavorites(@PathVariable Long userId) {
         return ResponseEntity.ok(service.getFavoritesByUser(userId));
     }
+
+    @GetMapping("/count/{userId}") // ✅ THÊM API NÀY
+    public ResponseEntity<Long> getFavoriteCount(@PathVariable Long userId) {
+        long count = favoriteHotelRepository.countByUserId(userId);
+        return ResponseEntity.ok(count);
+    }
+
+
+
+
 
 }

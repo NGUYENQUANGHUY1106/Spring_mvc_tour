@@ -25,6 +25,10 @@ public class AbstractEntity<T> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private T id;
 
+    public T getId() {
+        return id;
+    }
+
     @javax.persistence.Column(name = "created_at")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

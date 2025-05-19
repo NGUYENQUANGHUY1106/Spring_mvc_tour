@@ -11,4 +11,9 @@ public interface FavoriteHotelRepository extends JpaRepository<FavoriteHotel, Lo
 
     List<FavoriteHotel> findByUserId(Long userId);
 
+    long countByUserId(Long userId); // ✅ đảm bảo dòng này có
+
+
+
+
 }

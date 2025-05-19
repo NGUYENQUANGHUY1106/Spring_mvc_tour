@@ -10,6 +10,11 @@ import java.util.List;
 public interface BookHotelRepository extends JpaRepository<BookHotel, Long> {
     List<BookHotel> findAllByCustomer_Id(Long idCustomer);
     List<BookHotel> findAllByHotel_Id(Long idHotel);
+
+    long countByCustomerUserIdAndStatusBook(Long userId, String statusBook);
+
+    long countByCustomerIdAndStatusBook(Long customerId, String statusBook);
+
     @Query("SELECT COALESCE(SUM(b.totalPrice), 0) FROM BookHotel b WHERE b.hotel.id = :hotelId AND b.statusBook = 'COMFIRMED'")
     double getTotalRevenueByHotelId(@Param("hotelId") Long hotelId);
 }

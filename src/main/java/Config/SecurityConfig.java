@@ -50,12 +50,12 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(
+                                        new MvcRequestMatcher(introspector, "/**"), // ✅ cho phép toàn bộ API public
+                                        new MvcRequestMatcher(introspector, "/api/favorite/**"), // vẫn giữ nếu bạn muốn cụ thể
+                                        new MvcRequestMatcher(introspector, "/book_hotel/**"),
                                         new MvcRequestMatcher(introspector, "/customer/**"),
                                         new MvcRequestMatcher(introspector, "/auth/login"),
-                                        new MvcRequestMatcher(introspector, "/hotel/**"),
-                                        new MvcRequestMatcher(introspector, "/book_hotel/**"),
-                                        new MvcRequestMatcher(introspector, "/api/favorite/**")
-
+                                        new MvcRequestMatcher(introspector, "/hotel/**")
                                 )
                                 .permitAll()
                                 .requestMatchers(new MvcRequestMatcher(introspector, "/users")).hasAuthority("FULL_ACCESS")
@@ -67,6 +67,7 @@ public class SecurityConfig  {
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
