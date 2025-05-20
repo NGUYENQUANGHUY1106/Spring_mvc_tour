@@ -49,6 +49,12 @@ public class BookHotelController {
         return bookHotelService.updateBooked(bookedHotelUpdateRequest);
     }
 
+    @PutMapping("/book_hotel")
+    public ResponseEntity<BookHotelResponse> updateBookedHotel(@RequestBody BookedHotelUpdateRequest request) {
+        System.out.println("===> Đã nhận updateBookedHotel");
+        return ResponseEntity.ok(bookHotelService.updateBooked(request));
+    }
+
     @PutMapping("/checkout/{idBookHotel}")
     public BookHotelResponse checkout(@PathVariable Long idBookHotel) {
         return bookHotelService.checkoutBookHotel(idBookHotel);

@@ -19,6 +19,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +43,6 @@ public class BookHotelService {
         Hotel hotel = hotelService.getHotelEntityById(bookHotelRequest.getIdHotel());
         Customer customer = customerService.getCustomerByIdUser(bookHotelRequest.getIdUser());
 
-        // 🛠 Bước kiểm tra và trừ số phòng
         int currentRoom = hotel.getRoom();
         if (currentRoom < bookHotelRequest.getCountRoom()) {
             throw new IllegalArgumentException("Không đủ phòng trống để đặt!");
@@ -49,10 +50,11 @@ public class BookHotelService {
         hotel.setRoom(currentRoom - bookHotelRequest.getCountRoom());
         hotelService.updateHotel(hotel);
 
-        // Set các thông tin booking
         bookHotel.setCustomer(customer);
         bookHotel.setHotel(hotel);
         bookHotel.setStatusBook(EnumStatusBook.WAIT.name());
+        bookHotel.setCheckinTime(bookHotelRequest.getCheckinTime());
+        bookHotel.setCheckoutTime(bookHotelRequest.getCheckoutTime());
 
         return bookHotelMapper.toBookHotelResponse(bookHotelRepository.save(bookHotel));
     }
@@ -66,11 +68,9 @@ public class BookHotelService {
             throw new IllegalStateException("Chỉ có thể trả phòng khi đã xác nhận đặt phòng!");
         }
 
-        // 1. Đổi trạng thái booking thành CHECKOUT
         bookHotel.setStatusBook(EnumStatusBook.CHECKOUT.name());
         bookHotelRepository.save(bookHotel);
 
-        // 2. Cộng lại số phòng cho khách sạn
         Hotel hotel = bookHotel.getHotel();
         hotel.setRoom(hotel.getRoom() + bookHotel.getCountRoom());
         hotelRepository.save(hotel);
@@ -78,22 +78,18 @@ public class BookHotelService {
         return bookHotelMapper.toBookHotelResponse(bookHotel);
     }
 
-
     public List<BookHotelResponse> getBookHotelByIdUser(Long idUser) {
         String role = getCurrentUserRole();
         List<BookHotel> bookings = new ArrayList<>();
         if(role.equals(EnumRole.CUSTOMER.name())) {
             Customer customer = customerService.getCustomerByIdUser(idUser);
             bookings = bookHotelRepository.findAllByCustomer_Id(customer.getId());
-        }else if(role.equals(EnumRole.HOTEL.name())) {
+        } else if(role.equals(EnumRole.HOTEL.name())) {
             Hotel hotel = hotelService.getHotelByUserId(idUser);
             bookings = bookHotelRepository.findAllByHotel_Id(hotel.getId());
-
         }
         return bookings.stream().map(bookHotel -> bookHotelMapper.toBookHotelResponse(bookHotel)).collect(Collectors.toList());
     }
-
-
 
     public BookHotelResponse updateStatusBooked(Long idBooked, String status) {
         BookHotel bookHotel = bookHotelRepository.findById(idBooked).get();
@@ -108,19 +104,34 @@ public class BookHotelService {
         return bookHotelMapper.toBookHotelResponse(bookHotelRepository.save(bookHotel));
     }
 
+    public BookHotelResponse updateBooked(BookedHotelUpdateRequest request) {
+        BookHotel bookHotel = bookHotelRepository.findById(request.getId()).get();
+        bookHotel.setBookStart(request.getBookStart());
+        bookHotel.setBookEnd(request.getBookEnd());
+        bookHotel.setTotalPrice(request.getTotalPrice());
+        bookHotel.setCountRoom(request.getCountRoom());
 
-    public BookHotelResponse updateBooked(BookedHotelUpdateRequest bookedHotelUpdateRequest) {
-        BookHotel bookHotel = bookHotelRepository.findById(bookedHotelUpdateRequest.getId()).get();
-        bookHotel.setBookStart(bookedHotelUpdateRequest.getBookStart());
-        bookHotel.setBookEnd(bookedHotelUpdateRequest.getBookEnd());
-        bookHotel.setTotalPrice(bookedHotelUpdateRequest.getTotalPrice());
-        bookHotel.setCountRoom(bookedHotelUpdateRequest.getCountRoom());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        if (request.getCheckinTime() != null && !request.getCheckinTime().isEmpty()) {
+            bookHotel.setCheckinTime(LocalTime.parse(request.getCheckinTime(), formatter));
+        }
+
+        if (request.getCheckoutTime() != null && !request.getCheckoutTime().isEmpty()) {
+            bookHotel.setCheckoutTime(LocalTime.parse(request.getCheckoutTime(), formatter));
+        }
+
         return bookHotelMapper.toBookHotelResponse(bookHotelRepository.save(bookHotel));
     }
+
+
+
+
+
     private String getCurrentUserRole() {
         return SecurityContextHolder.getContext().getAuthentication()
                 .getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority) // lấy role dạng "ROLE_CUSTOMER"
+                .map(GrantedAuthority::getAuthority)
                 .findFirst()
                 .orElse("ROLE_UNKNOWN");
     }

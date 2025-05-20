@@ -28,4 +28,7 @@ public class BookHotelResponse {
     private String modifiedBy;
 
     private HotelResponse hotel;
+    private String checkinTime;
+    private String checkoutTime;
+
 }

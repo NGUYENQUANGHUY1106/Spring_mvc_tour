@@ -1,8 +1,12 @@
 package Dto.Request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
+import java.time.LocalTime;
 import java.util.Date;
+
+
 
 @Getter
 public class BookHotelRequest {
@@ -26,4 +30,18 @@ public class BookHotelRequest {
     public int getCountRoom() {
         return countRoom;
     }
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime checkinTime;
+
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime checkoutTime;
+
+    public LocalTime getCheckinTime() {
+        return checkinTime;
+    }
+
+    public LocalTime getCheckoutTime() {
+        return checkoutTime;
+    }
+
 }

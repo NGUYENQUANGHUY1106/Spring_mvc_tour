@@ -1,6 +1,7 @@
 package Entity;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 @Setter
@@ -48,4 +50,27 @@ public class BookHotel extends AbstractEntity<Long>{
     public int getCountRoom() {
         return countRoom;
     }
+    @Column(name = "checkin_time")
+    private LocalTime checkinTime;
+
+    @Column(name = "checkout_time")
+    private LocalTime checkoutTime;
+
+    public LocalTime getCheckinTime() {
+        return checkinTime;
+    }
+
+    public void setCheckinTime(LocalTime checkinTime) {
+        this.checkinTime = checkinTime;
+    }
+
+    public LocalTime getCheckoutTime() {
+        return checkoutTime;
+    }
+
+    public void setCheckoutTime(LocalTime checkoutTime) {
+        this.checkoutTime = checkoutTime;
+    }
+
+
 }
