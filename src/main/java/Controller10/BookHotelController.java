@@ -27,7 +27,7 @@ public class BookHotelController {
     private BookHotelService bookHotelService;
 
     @Autowired
-    private CustomerRepository customerRepository; // ✅ thêm dòng này
+    private CustomerRepository customerRepository;
 
     @PostMapping()
     public BookHotelResponse bookHotel(@RequestBody BookHotelRequest bookHotelRequest) {
@@ -54,10 +54,9 @@ public class BookHotelController {
         return bookHotelService.checkoutBookHotel(idBookHotel);
     }
 
-    // ✅ Sửa lại hàm đếm đúng theo customerId
     @GetMapping("/booking-counts/{userId}")
     public ResponseEntity<Map<String, Long>> getBookingCounts(@PathVariable Long userId) {
-        Customer customer = customerRepository.findByUserId(userId); // cần thêm phương thức này trong repository
+        Customer customer = customerRepository.findByUserId(userId);
         if (customer == null) {
             return ResponseEntity.notFound().build();
         }
@@ -68,6 +67,7 @@ public class BookHotelController {
         result.put("COMFIRMED", bookHotelRepository.countByCustomerIdAndStatusBook(customerId, "COMFIRMED"));
         result.put("WAIT", bookHotelRepository.countByCustomerIdAndStatusBook(customerId, "WAIT"));
         result.put("CHECKOUT", bookHotelRepository.countByCustomerIdAndStatusBook(customerId, "CHECKOUT"));
+        result.put("CANCELLED", bookHotelRepository.countByCustomerIdAndStatusBook(customerId, "CANCELLED"));
 
         return ResponseEntity.ok(result);
     }
