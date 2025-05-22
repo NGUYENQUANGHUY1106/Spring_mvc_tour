@@ -110,6 +110,9 @@ public class BookHotelService {
         bookHotel.setBookEnd(request.getBookEnd());
         bookHotel.setTotalPrice(request.getTotalPrice());
         bookHotel.setCountRoom(request.getCountRoom());
+        // oại phòng hạng phòng
+        bookHotel.setBedType(request.getBedType());
+        bookHotel.setRoomType(request.getRoomType());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -124,6 +127,11 @@ public class BookHotelService {
         return bookHotelMapper.toBookHotelResponse(bookHotelRepository.save(bookHotel));
     }
 
+    public BookHotelResponse getBookHotelById(Long id) {
+        BookHotel bookHotel = bookHotelRepository.findById(id).orElse(null);
+        if (bookHotel == null) return null;
+        return bookHotelMapper.convertToResponse(bookHotel);
+    }
 
 
 
@@ -135,4 +143,5 @@ public class BookHotelService {
                 .findFirst()
                 .orElse("ROLE_UNKNOWN");
     }
+
 }

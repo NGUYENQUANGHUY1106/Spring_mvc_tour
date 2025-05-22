@@ -11,6 +11,25 @@ public class BookedHotelUpdateRequest {
     private String checkinTime;
     private String checkoutTime;
 
+    private String bedType;
+    private String roomType;
+
+    public String getBedType() {
+        return bedType;
+    }
+
+    public void setBedType(String bedType) {
+        this.bedType = bedType;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
     // Getter
     public Long getId() {
         return id;

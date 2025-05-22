@@ -19,6 +19,10 @@ public class BookHotelRequest {
     private Date bookStart;
     private Date bookEnd;
 
+    private String bedType;
+    private String roomType;
+
+
     public Long getIdHotel() {
         return idHotel;
     }

@@ -39,6 +39,11 @@ public class BookHotelController {
         return bookHotelService.getBookHotelByIdUser(idUser);
     }
 
+    @GetMapping("/detail/{idBookHotel}")
+    public BookHotelResponse getBookHotelById(@PathVariable Long idBookHotel) {
+        return bookHotelService.getBookHotelById(idBookHotel);
+    }
+
     @PutMapping("/{idBookHotel}/{status}")
     public BookHotelResponse updateStatus(@PathVariable Long idBookHotel, @PathVariable String status) {
         return bookHotelService.updateStatusBooked(idBookHotel, status);

@@ -56,6 +56,28 @@ public class BookHotel extends AbstractEntity<Long>{
     @Column(name = "checkout_time")
     private LocalTime checkoutTime;
 
+    @Column(name = "bed_type")
+    private String bedType;
+
+    @Column(name = "room_type")
+    private String roomType;
+
+    public String getBedType() {
+        return bedType;
+    }
+
+    public void setBedType(String bedType) {
+        this.bedType = bedType;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
     public LocalTime getCheckinTime() {
         return checkinTime;
     }

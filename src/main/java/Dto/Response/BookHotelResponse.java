@@ -27,8 +27,27 @@ public class BookHotelResponse {
     private String createdBy;
     private String modifiedBy;
 
+    private String bedType;
+    private String roomType;
+
+
     private HotelResponse hotel;
     private String checkinTime;
     private String checkoutTime;
 
+    public String getBedType() {
+        return bedType;
+    }
+
+    public void setBedType(String bedType) {
+        this.bedType = bedType;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
 }

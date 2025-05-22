@@ -15,10 +15,14 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         uses = {HotelMapper.class, AddressHotel.class})
 public interface BookHotelMapper {
     BookHotel toBookHotel(BookHotelRequest bookHotelRequest);
+    BookHotelResponse convertToResponse(BookHotel bookHotel);
+
 
     @Mappings({
             @Mapping(source = "checkinTime", target = "checkinTime"),
-            @Mapping(source = "checkoutTime", target = "checkoutTime")
+            @Mapping(source = "checkoutTime", target = "checkoutTime"),
+            @Mapping(source = "bedType", target = "bedType"),
+            @Mapping(source = "roomType", target = "roomType"),
     })
     BookHotelResponse toBookHotelResponse(BookHotel bookHotel);
 }
