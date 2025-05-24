@@ -1,8 +1,5 @@
 package Enum1;
 
 public enum EnumStatusBook {
-        WAIT, CONFIRMED, CANCELLED, CHECKOUT
-
-
-
+        WAIT, CONFIRMED, CANCELLED, CHECKOUT, RETURNED
 }
