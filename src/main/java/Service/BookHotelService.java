@@ -15,14 +15,15 @@ import Repository.BookHotelRepository;
 import Repository.HotelRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,18 +82,19 @@ public class BookHotelService {
     public List<BookHotelResponse> getBookHotelByIdUser(Long idUser) {
         String role = getCurrentUserRole();
         List<BookHotel> bookings = new ArrayList<>();
-        if(role.equals(EnumRole.CUSTOMER.name())) {
+        if (role.equals(EnumRole.CUSTOMER.name())) {
             Customer customer = customerService.getCustomerByIdUser(idUser);
             bookings = bookHotelRepository.findAllByCustomer_Id(customer.getId());
-        } else if(role.equals(EnumRole.HOTEL.name())) {
+        } else if (role.equals(EnumRole.HOTEL.name())) {
             Hotel hotel = hotelService.getHotelByUserId(idUser);
             bookings = bookHotelRepository.findAllByHotel_Id(hotel.getId());
         }
-        return bookings.stream().map(bookHotel -> bookHotelMapper.toBookHotelResponse(bookHotel)).collect(Collectors.toList());
+        return bookings.stream().map(bookHotelMapper::toBookHotelResponse).collect(Collectors.toList());
     }
 
     public BookHotelResponse updateStatusBooked(Long idBooked, String status) {
-        BookHotel bookHotel = bookHotelRepository.findById(idBooked).get();
+        BookHotel bookHotel = bookHotelRepository.findById(idBooked).orElseThrow(() ->
+                new ResourceNotFoundException("Booking không tồn tại"));
         bookHotel.setStatusBook(status);
 
         if (EnumStatusBook.CHECKOUT.name().equals(status)) {
@@ -105,12 +107,13 @@ public class BookHotelService {
     }
 
     public BookHotelResponse updateBooked(BookedHotelUpdateRequest request) {
-        BookHotel bookHotel = bookHotelRepository.findById(request.getId()).get();
+        BookHotel bookHotel = bookHotelRepository.findById(request.getId()).orElseThrow(() ->
+                new ResourceNotFoundException("Booking không tồn tại"));
+
         bookHotel.setBookStart(request.getBookStart());
         bookHotel.setBookEnd(request.getBookEnd());
         bookHotel.setTotalPrice(request.getTotalPrice());
         bookHotel.setCountRoom(request.getCountRoom());
-        // oại phòng hạng phòng
         bookHotel.setBedType(request.getBedType());
         bookHotel.setRoomType(request.getRoomType());
 
@@ -128,11 +131,27 @@ public class BookHotelService {
     }
 
     public BookHotelResponse getBookHotelById(Long id) {
-        BookHotel bookHotel = bookHotelRepository.findById(id).orElse(null);
-        if (bookHotel == null) return null;
-        return bookHotelMapper.convertToResponse(bookHotel);
+        BookHotel book = bookHotelRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Không tìm thấy đặt phòng"));
+        return bookHotelMapper.convertToResponse(book);
     }
 
+    public Map<String, Integer> getBookingCountsByUser(Long userId) {
+        // 1. Lấy đúng Customer từ User
+        Customer customer = customerService.getCustomerByIdUser(userId);
+
+        // 2. Truy vấn theo Customer.id
+        List<BookHotel> bookings = bookHotelRepository.findAllByCustomer_Id(customer.getId());
+
+        // 3. Đếm số lượng theo trạng thái
+        Map<String, Integer> counts = new HashMap<>();
+        for (BookHotel booking : bookings) {
+            String status = booking.getStatusBook();
+            counts.put(status, counts.getOrDefault(status, 0) + 1);
+        }
+
+        return counts;
+    }
 
 
 
@@ -143,5 +162,4 @@ public class BookHotelService {
                 .findFirst()
                 .orElse("ROLE_UNKNOWN");
     }
-
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/book_hotel")
@@ -43,5 +44,16 @@ public class BookHotelController {
     public BookHotelResponse checkout(@PathVariable Long idBookHotel) {
         return bookHotelService.checkoutBookHotel(idBookHotel);
     }
+    @GetMapping("/detail/{id}")
+    public BookHotelResponse getDetailBooked(@PathVariable Long id) {
+        return bookHotelService.getBookHotelById(id);
+    }
+
+    @GetMapping("/booking-counts/{userId}")
+    public Map<String, Integer> getBookingCounts(@PathVariable Long userId) {
+        return bookHotelService.getBookingCountsByUser(userId);
+    }
+
+
 
 }
